@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sectiunea de comentarii 12E</title>
+    <style>
+        /* Style for the comment container */
+        #commentsContainer {
+            margin-top: 20px;
+        }
+    
+        /* Style for individual comments */
+        .comment-box {
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            padding: 5px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+    
+        /* Style for the username */
+        .comment-username {
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: large;
+            color: #333;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+    
+        /* Style for the comment text */
+        .comment-text {
+            margin-top: 5px;
+            color: #555;
+        }
+
+        #headerContainer {
+            display: flex;
+            flex-direction: row; /* Stack the title and subtitle vertically */
+            align-items: left;
+            justify-content: left;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the title container */
+        #titleContainer {
+            display: flex;
+            flex-direction: column; /* Stack the title and subtitle vertically */
+            align-items: left;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the title text */
+        #title {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Style for the image */
+        #titleImage {
+            width: 80px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+            margin-left: 10px; /* Space between title and image */
+        }
+
+        #titleSub{
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>    
+</head>
+<body>
+    <div id="headerContainer">
+        <div id="titleContainer">
+            <h1 id="title">Sectiunea de comentarii 12E</h1>
+            <p id="titleSub">Simtiti-va ca acasa, postati orice va da prin cap mai jos:</p>
+        </div>
+        <img id="titleImage" src="romania-flag-animation.gif" alt="Title Image">
+    </div>
+
+    <div>
+        <form id="commentForm">
+            <label for="usernameInput">Username-ul tau:</label><br>
+            <input type="text" id="usernameInput" placeholder="Alege un nume..."><br><br>
+
+            <label for="commentInput">Postarea ta:</label><br>
+            <textarea id="commentInput" rows="4" cols="50" placeholder="Scrie ceva..."></textarea><br><br>
+
+            <button type="button" onclick="postComment()">Posteaza</button>
+        </form>
+    </div>
+
+    <div>
+        <h2>Postari:</h2>
+        <div id="commentsContainer">
+            <p>Nicio postare deocamdata :( Fii tu primul care posteaza!</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://192.168.1.166:25595/comments';
+    
+        // Fetch comments from the server
+        async function loadComments() {
+            try {
+                const response = await fetch(API_URL);
+                const comments = await response.json();
+                displayComments(comments);
+            } catch (error) {
+                console.error("Error fetching comments:", error);
+            }
+        }
+    
+        // Display comments on the page
+        function displayComments(comments) {
+            const commentsContainer = document.getElementById("commentsContainer");
+            commentsContainer.innerHTML = ""; // Clear existing comments
+
+            if (comments.length > 0) {
+                comments.forEach(comment => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment-box';
+
+                    const usernameElement = document.createElement('p');
+                    usernameElement.className = 'comment-username';
+                    usernameElement.textContent = comment.username;
+
+                    const textElement = document.createElement('p');
+                    textElement.className = 'comment-text';
+                    textElement.textContent = comment.text;
+
+                    commentElement.appendChild(usernameElement);
+                    commentElement.appendChild(textElement);
+
+                    commentsContainer.appendChild(commentElement);
+                });
+            } else {
+                commentsContainer.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
+            }
+        }
+
+    
+        // Post a new comment to the server
+        async function postComment() {
+            const usernameInput = document.getElementById("usernameInput");
+            const commentInput = document.getElementById("commentInput");
+    
+            if (usernameInput.value.trim() === "") {
+                alert("Please enter a username.");
+                return;
+            }
+    
+            if (commentInput.value.trim() === "") {
+                alert("Please enter a comment before posting.");
+                return;
+            }
+    
+            const newComment = {
+                username: usernameInput.value,
+                text: commentInput.value
+            };
+    
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newComment)
+                });
+    
+                if (response.ok) {
+                    commentInput.value = ""; // Clear input
+                    loadComments(); // Reload comments
+                } else {
+                    const error = await response.json();
+                    alert(error.message);
+                }
+            } catch (error) {
+                console.error("Error posting comment:", error);
+            }
+        }
+    
+        // Load comments on page load
+        window.onload = loadComments;
+    </script>        
+</body>
+</html>
