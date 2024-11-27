@@ -18,6 +18,13 @@
             margin-bottom: 10px;
             background-color: #f9f9f9;
         }
+        .username-container {
+            border: 1px solid #c4c4c4;
+            border-radius: 2px;
+            background-color: #dddddd;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
     
         .comment-username {
             font-weight: bold;
@@ -64,6 +71,12 @@
             margin-left: 10px; /* Space between title and image */
         }
 
+        #promoImage {
+            width: 300px; /* Adjust size as needed */
+            height: 64px; /* Adjust size as needed */
+            margin-left: 0px; /* Space between title and image */
+        }
+
         #titleSub{
             margin: 0;
             font-size: 16px;
@@ -76,6 +89,7 @@
         <div id="titleContainer">
             <h1 id="title">Sectiunea de comentarii 12E</h1>
             <p id="titleSub">Simtiti-va ca acasa, postati orice mai jos:</p>
+            <img id="promoImage" src="lasconi.png" alt="Promo Image">
         </div>
         <img id="titleImage" src="romania-flag-animation.gif" alt="Title Image">
     </div>
@@ -100,7 +114,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://192.168.1.166:25595/comments';
+        const API_URL = 'http://100.113.152.202:25595/comments';
     
         // Fetch comments from the server
         async function loadComments() {
@@ -115,31 +129,41 @@
     
         // Display comments on the page
         function displayComments(comments) {
-            const commentsContainer = document.getElementById("commentsContainer");
-            commentsContainer.innerHTML = ""; // Clear existing comments
+        const commentsContainer = document.getElementById("commentsContainer");
+        commentsContainer.innerHTML = ""; // Clear existing comments
 
-            if (comments.length > 0) {
-                comments.forEach(comment => {
-                    const commentElement = document.createElement('div');
-                    commentElement.className = 'comment-box';
+        if (comments.length > 0) {
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment-box';
 
-                    const usernameElement = document.createElement('p');
-                    usernameElement.className = 'comment-username';
-                    usernameElement.textContent = comment.username;
+                // Create a div for the username
+                const usernameContainer = document.createElement('div');
+                usernameContainer.className = 'username-container';
 
-                    const textElement = document.createElement('p');
-                    textElement.className = 'comment-text';
-                    textElement.textContent = comment.text;
+                const usernameElement = document.createElement('p');
+                usernameElement.className = 'comment-username';
+                usernameElement.textContent = comment.username;
 
-                    commentElement.appendChild(usernameElement);
-                    commentElement.appendChild(textElement);
+                // Append the username to the username container
+                usernameContainer.appendChild(usernameElement);
 
-                    commentsContainer.appendChild(commentElement);
-                });
-            } else {
-                commentsContainer.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
-            }
+                // Create a p element for the comment text
+                const textElement = document.createElement('p');
+                textElement.className = 'comment-text';
+                textElement.textContent = comment.text;
+
+                // Append everything to the comment box
+                commentElement.appendChild(usernameContainer);
+                commentElement.appendChild(textElement);
+
+                // Append the comment box to the comments container
+                commentsContainer.appendChild(commentElement);
+            });
+        } else {
+            commentsContainer.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
         }
+    }
 
     
         // Post a new comment to the server
