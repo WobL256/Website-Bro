@@ -124,6 +124,7 @@
                 displayComments(comments);
             } catch (error) {
                 console.error("Error fetching comments:", error);
+                commentsContainer.innerHTML = "<p>A aparut o eroare la incarcarea postarilor. Te rugam sa reincarci site-ul.</p>";
             }
         }
     
