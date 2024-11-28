@@ -109,12 +109,12 @@
     <div>
         <h2>Postari:</h2>
         <div id="commentsContainer">
-            <p>Nicio postare deocamdata :( Fii tu primul care posteaza!</p>
+            <p>Se incarca postarile...</p>
         </div>
     </div>
 
     <script>
-        const API_URL = '100.113.152.202:25595/comments';
+        const API_URL = 'http://100.113.152.202:3000/comments';
     
         // Fetch comments from the server
         async function loadComments() {
@@ -162,7 +162,7 @@
                 commentsContainer.appendChild(commentElement);
             });
         } else {
-            commentsContainer.innerHTML = "<p>No comments yet. Be the first to comment!</p>";
+            commentsContainer.innerHTML = "<p>Nicio postare deocamdata. Fii tu primul care posteaza!</p>";
         }
     }
 

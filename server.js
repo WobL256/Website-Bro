@@ -4,7 +4,7 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
-const PORT = 25595;
+const PORT = 3000;
 const POSTS_FILE = 'posts.json';
 
 app.use(cors());
