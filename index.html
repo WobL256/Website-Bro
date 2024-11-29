@@ -117,9 +117,9 @@
         const API_URL = 'http://12e.24-7.ro:3100/comments';
 
         //redirect https traffic to http because we don't have an SSL certified js server
-        if (location.protocol === 'https:') {
+        /*if (location.protocol === 'https:') {
             location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
-        }
+        }*/
     
         // Fetch comments from the server
         async function loadComments() {
