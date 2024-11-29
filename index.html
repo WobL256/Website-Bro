@@ -118,7 +118,7 @@
 
         //redirect https traffic to http because we don't have an SSL certified js server
         if (location.protocol === 'https:') {
-        location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
+            location.href = 'http:' + window.location.href.substring(window.location.protocol.length);
         }
     
         // Fetch comments from the server
